@@ -119,30 +119,42 @@ nav {
 .section p { font-size: 20px; color: #c9c9c9; }
 
 .carousel {
-    width: 720px;
+    width: 100%;
+    max-width: 720px;     /* antes era width fixa */
     overflow: hidden;
-    margin: 30px auto; /* Centraliza */
+    margin: 30px auto;
     border-radius: 10px;
 }
 
 .carousel-track {
     display: flex;
     gap: 10px;
-    width: calc(170px * 8 + 10px * 7); /* largura total das 8 imagens */
+    width: max-content;    /* deixa a largura se adaptar automaticamente */
     animation: slide 20s linear infinite;
 }
 
 .carousel img {
-    width: 170px;
-    height: 120px;
+    width: clamp(120px, 28vw, 170px);  /* imagem encolhe no mobile, cresce no desktop */
+    height: auto;
     border-radius: 10px;
     background: #444;
 }
 
 /* Loop suave */
 @keyframes slide {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* metade das imagens = 4 imgs */
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+/* Responsividade extra para telas muito pequenas */
+@media (max-width: 500px) {
+    .carousel img {
+        width: clamp(100px, 40vw, 150px);
+    }
 }
 
 .galeria {
@@ -312,20 +324,17 @@ footer {
 }
 @media (max-width: 850px) {
   footer {
-    flex-direction: column;
+    flex-direction: column;  /* muda de linha obrigatoriamente */
     text-align: center;
     gap: 18px;
   }
 
   .social-icons {
     margin-left: 0;
-    gap: 28px;
-  }
-
-  .social-icons img {
-    width: 24px;
-    height: 24px;
-    filter: invert(1);
+    gap: 22px;
+    flex-wrap: wrap;           /* <-- permite quebrar linha */
+    justify-content: center;   /* <-- centraliza no mobile */
+    width: 100%;               /* <-- evita aperto */
   }
 
   .divider {
@@ -344,15 +353,11 @@ footer {
 }
 
 @media (max-width: 480px) {
-  .social-icons img {
-    width: 20px;
-    height: 20px;
+  .social-icons {
+    gap: 18px;
   }
 
   .copyright {
     font-size: 10px;
   }
 }
-
-
-
